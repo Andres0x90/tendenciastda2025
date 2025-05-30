@@ -1,4 +1,6 @@
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
@@ -68,3 +70,16 @@ class TransactionsFrontView(ViewSet):
         if response.status_code != 200:
             return Response(template_name='auth/front/templates/forbidden.html')
         return redirect(f'/api/front/transactions/?token={request.GET.get("token")}')
+
+    @action(detail=False, methods=['post'], url_path='report')
+    def report(self, request):
+        response = requests.get(request.build_absolute_uri(f'/api/transactions/pdf/report/'),
+                                headers={'authorization': request.GET.get('token')})
+        if response.status_code != 200:
+            return Response(template_name='auth/front/templates/forbidden.html')
+        return HttpResponse(
+            response.content,
+            content_type='application/pdf',
+            headers={'Content-Disposition': 'attachment; filename="sales_report.pdf"'},
+            status=200
+        )
