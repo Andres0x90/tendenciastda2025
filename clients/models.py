@@ -15,13 +15,10 @@ class Client(models.Model):
 
     def to_dict(self):
         return {
-            'id': self.id,
+            'document': self.document,
             'name': self.name,
             'last_name': self.last_name,
-            'ssn': self.cedula,
             'email': self.email,
             'phone': self.phone,
-            'address': self.address,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'address': self.address
         }

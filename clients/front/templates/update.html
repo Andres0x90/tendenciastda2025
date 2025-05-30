@@ -24,41 +24,43 @@
               </div>
             </div>
           </div>
-        </nav>
+      </nav>
       <div class="d-flex justify-content-center align-items-center vh-100">
-        <form action="/api/front/products/update-product/?id={{ product.id }}&token={{ token }}" method="post" class="col-sm-6">
-            <div class="mb-3">
-                <label class="form-label">ID</label>
-                <input type="text" class="form-control" value="{{ product.id }}" name="id" disabled>
+        <form action="/api/front/clients/update-client/?id={{ client.document }}&token={{ token }}" method="post" class="col-sm-6">
+              <div class="mb-3">
+              <label class="col-form-label">Documento</label>
+              <div>
+                <input type="text" class="form-control" name="document" value="{{ client.document }}" disabled>
+              </div>
             </div>
             <div class="mb-3">
               <label class="col-form-label">Nombre</label>
               <div>
-                <input type="text" class="form-control" name="name" value="{{ product.name }}">
+                <input type="text" class="form-control" name="name" value="{{ client.name }}">
               </div>
             </div>
             <div class="mb-3">
-              <label class="col-form-label">Categoria</label>
+              <label class="col-form-label">Apellido</label>
               <div>
-                <input type="text" class="form-control" name="category" value="{{ product.category }}">
+                <input type="text" class="form-control" name="last_name" value="{{ client.last_name }}">
               </div>
             </div>
             <div class="mb-3">
-              <label class="col-form-label">Subcategoria</label>
+              <label class="col-form-label">Email</label>
               <div>
-                <input type="text" class="form-control" name="subcategory" value="{{ product.subcategory }}">
+                <input type="email" class="form-control" name="email" value="{{ client.email }}">
               </div>
             </div>
             <div class="mb-3">
-              <label class="col-form-label">Precio</label>
+              <label class="col-form-label">Telefono</label>
               <div>
-                <input type="text" class="form-control" name="price" value="{{ product.price }}">
+                <input type="text" class="form-control" name="phone" value="{{ client.phone }}">
               </div>
             </div>
             <div class="mb-3">
-              <label class="col-form-label">Cantidad</label>
+              <label class="col-form-label">Direccion</label>
               <div>
-                <input type="number" class="form-control" name="quantity" value="{{ product.quantity }}">
+                <input type="text" class="form-control" name="address" value="{{ client.address }}">
               </div>
             </div>
             <div class="d-flex justify-content-end">
