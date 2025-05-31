@@ -42,7 +42,7 @@ class TransactionsFrontView(ViewSet):
 
         if response.status_code != 200:
             return Response(template_name='auth/front/templates/forbidden.html')
-        return redirect(f"/api/front/transactions/?token={request.GET.get("token")}")
+        return redirect(f"/api/front/transactions/?token={request.GET.get('token')}")
 
     def create(self, request):
         products_per_transaction = []
@@ -61,7 +61,7 @@ class TransactionsFrontView(ViewSet):
                                 json=body)
         if response.status_code != 201:
             return Response(template_name='auth/front/templates/forbidden.html')
-        return redirect(f"/api/front/transactions/?token={request.GET.get("token")}")
+        return redirect(f"/api/front/transactions/?token={request.GET.get('token')}")
 
     @action(detail=False, methods=['GET'], url_path='delete')
     def delete_view(self, request):
@@ -69,7 +69,7 @@ class TransactionsFrontView(ViewSet):
                                 headers={'authorization': request.GET.get('token')})
         if response.status_code != 200:
             return Response(template_name='auth/front/templates/forbidden.html')
-        return redirect(f"/api/front/transactions/?token={request.GET.get("token")}")
+        return redirect(f"/api/front/transactions/?token={request.GET.get('token')}")
 
     @action(detail=False, methods=['post'], url_path='report')
     def report(self, request):

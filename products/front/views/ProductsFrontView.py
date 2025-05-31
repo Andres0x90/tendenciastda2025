@@ -28,7 +28,7 @@ class ProductsFrontView(ViewSet):
                                 data=request.data)
         if response.status_code != 200:
             return Response(template_name='auth/front/templates/forbidden.html')
-        return redirect(f"/api/front/products/?token={request.GET.get("token")}")
+        return redirect(f"/api/front/products/?token={request.GET.get('token')}")
 
     def create(self, request):
         response = requests.post(request.build_absolute_uri(f"/api/products/"),
@@ -36,7 +36,7 @@ class ProductsFrontView(ViewSet):
                                 data=request.data)
         if response.status_code != 201:
             return Response(template_name='auth/front/templates/forbidden.html')
-        return redirect(f"/api/front/products/?token={request.GET.get("token")}")
+        return redirect(f"/api/front/products/?token={request.GET.get('token')}")
 
     @action(detail=False, methods=['GET'], url_path='delete')
     def delete_view(self, request):
@@ -44,4 +44,4 @@ class ProductsFrontView(ViewSet):
                                 headers={'authorization': request.GET.get('token')})
         if response.status_code != 200:
             return Response(template_name='auth/front/templates/forbidden.html')
-        return redirect(f"/api/front/products/?token={request.GET.get("token")}")
+        return redirect(f"/api/front/products/?token={request.GET.get('token')}")
