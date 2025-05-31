@@ -141,7 +141,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-CSRF_TRUSTED_ORIGINS = ['tendencias-sales-system.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://tendencias-sales-system.onrender.com']
 #REST_FRAMEWORK = {
 #    'DEFAULT_RENDERER_CLASSES': [
 #        'rest_framework.renderers.JSONRenderer',
