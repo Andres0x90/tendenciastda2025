@@ -2,7 +2,7 @@ from django.db.models import QuerySet
 
 from products.models import Product
 from products.serializers import ProductDataSerializer
-
+import logging
 
 class ProductService:
     def create_product(self, product: Product) -> Product:
@@ -12,6 +12,7 @@ class ProductService:
             data_saved = data_serializer.data
             return data_serializer.map_to_entity(data_saved)
 
+        logging.error(f"There was an error when saving product with data {product.to_dict()}")
         raise Exception("Ocurrio un error al guardar el producto")
 
     def get_product_by_id(self, product_id: int) -> Product:

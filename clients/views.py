@@ -8,6 +8,7 @@ from clients.models import Client
 from clients.serializers import ClientDataSerializer
 from commons.jwt_utils import JWTUtils
 from commons.permissions import Permissions
+import logging
 
 
 # Create your views here.
@@ -31,6 +32,7 @@ class ClientView(ModelViewSet):
         if Permissions.CREATE_CLIENT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Create client service called successfully with user {token_info['user']}")
         return super().create(request, *args, **kwargs)
 
     @swagger_auto_schema(responses={200: ClientDataSerializer()},
@@ -43,6 +45,7 @@ class ClientView(ModelViewSet):
         if Permissions.VIEW_CLIENT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Retrieve client service called successfully with user {token_info['user']}")
         return super().retrieve(request, *args, **kwargs)
 
     @swagger_auto_schema(responses={200: ClientDataSerializer(many=True)}, manual_parameters=[header_param])
@@ -54,6 +57,7 @@ class ClientView(ModelViewSet):
         if Permissions.VIEW_CLIENT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"List clients service called successfully with user {token_info['user']}")
         return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(request_body=ClientDataSerializer, responses={200: ClientDataSerializer()}, manual_parameters=[header_param])
@@ -65,6 +69,7 @@ class ClientView(ModelViewSet):
         if Permissions.UPDATE_CLIENT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Update client service called successfully with user {token_info['user']}")
         return super().update(request, *args, **kwargs)
 
     @swagger_auto_schema(request_body=ClientDataSerializer, responses={200: ClientDataSerializer()}, manual_parameters=[header_param])
@@ -76,6 +81,7 @@ class ClientView(ModelViewSet):
         if Permissions.UPDATE_CLIENT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Partial update client service called successfully with user {token_info['user']}")
         return super().partial_update(request, *args, **kwargs)
 
     @swagger_auto_schema(manual_parameters=[header_param])
@@ -87,4 +93,5 @@ class ClientView(ModelViewSet):
         if Permissions.DELETE_CLIENT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Delete client service called successfully with user {token_info['user']}")
         return super().destroy(request, *args, **kwargs)

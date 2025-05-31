@@ -14,6 +14,7 @@ from commons.permissions import Permissions
 from products.models import Product
 from products.serializers import ProductRequestSerializer, ProductDataSerializer
 from products.services import ProductService
+import logging
 
 
 class ProductView(ViewSet):
@@ -41,11 +42,13 @@ class ProductView(ViewSet):
         if Permissions.CREATE_PRODUCT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Calling create product service with user {token_info['user']}")
         product_request_serializer: ProductRequestSerializer = ProductRequestSerializer(data=request.data)
         if product_request_serializer.is_valid(raise_exception=True):
             product: Product = product_request_serializer.create(product_request_serializer.data)
             product_saved: Product = self.product_service.create_product(product)
             product_serializer: ProductDataSerializer = ProductDataSerializer(product_saved)
+            logging.info(f"Create product service called successfully with user {token_info['user']}")
             return Response(product_serializer.data, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(responses={200: ProductDataSerializer(),
@@ -59,9 +62,13 @@ class ProductView(ViewSet):
         if Permissions.VIEW_PRODUCT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Calling retrieve product service with user {token_info['user']}")
+
         try:
+            logging.info(f"Retrieve product service called successfully with user {token_info['user']}")
             return Response(self.product_service.get_product_by_id(pk).to_dict(), status=status.HTTP_200_OK)
         except Product.DoesNotExist:
+            logging.error(f"There was an error retrieving product service with user {token_info['user']}")
             return Response({
                 "error": "Product not found",
             },status=status.HTTP_404_NOT_FOUND)
@@ -75,11 +82,14 @@ class ProductView(ViewSet):
         if Permissions.VIEW_PRODUCT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Calling list products service with user {token_info['user']}")
+
         products = self.product_service.get_all_products()
         response = []
         for product in products:
             response.append(product.to_dict())
 
+        logging.info(f"List products service called successfully with user {token_info['user']}")
         return Response(response, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=ProductRequestSerializer, responses={200: ProductDataSerializer()}, manual_parameters=[header_param])
@@ -91,12 +101,17 @@ class ProductView(ViewSet):
         if Permissions.UPDATE_PRODUCT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Calling update product service with user {token_info['user']}")
+
         product_request_serializer: ProductRequestSerializer = ProductRequestSerializer(data=request.data)
         if product_request_serializer.is_valid(raise_exception=True):
             product: Product = product_request_serializer.create(product_request_serializer.data)
             product.id = pk
             product_saved: Product = self.product_service.update_product(product)
+            logging.info(f"Update product service called successfully with user {token_info['user']}")
             return Response(product_saved.to_dict(), status=status.HTTP_200_OK)
+
+        logging.error(f"There was an error calling update product service with user {token_info['user']}")
 
     @swagger_auto_schema(responses={200: "'message': 'This product has been deleted successfully'",
                                     404: "{'error': 'Product not found'}"}, manual_parameters=[header_param])
@@ -108,12 +123,16 @@ class ProductView(ViewSet):
         if Permissions.DELETE_PRODUCT not in token_info['permissions']:
             return self.forbidden_response
 
+        logging.info(f"Calling delete product service with user {token_info['user']}")
+
         try:
             self.product_service.delete_product(pk)
+            logging.info(f"Delete product service called successfully with user {token_info['user']}")
             return Response({
                 "message": "This product has been deleted successfully",
             },status=status.HTTP_200_OK)
         except Product.DoesNotExist:
+            logging.error(f"There was an error retrieving product in delete product service with user {token_info['user']}")
             return Response({
                 "error": "Product not found",
             },status=status.HTTP_404_NOT_FOUND)
