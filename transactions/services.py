@@ -13,6 +13,7 @@ from reportlab.platypus import Table, TableStyle
 
 from clients.models import Client
 from products.models import Product
+from transactions.email_service import EmailService
 from transactions.models import Transaction, ProductPerTransaction, Report
 from transactions.serializers import TransactionDataSerializer
 import io
@@ -42,6 +43,7 @@ class TransactionService:
                 stock = product_per_transaction.product.quantity - product_per_transaction.quantity
                 product_per_transaction.product.quantity = stock
                 Product.objects.bulk_update([product_per_transaction.product], fields=['quantity'])
+            EmailService.send(transaction.client.email, transaction)
             return data_serializer.map_to_entity(data_saved)
 
         raise Exception("Ocurrio un error al efectuar la transaccion")
